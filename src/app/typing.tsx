@@ -11,8 +11,11 @@ export function Typing() {
   const [input, setInput] = useState("");
   const [done, setDone] = useState(false);
   const [numMistakes, setNumMistakes] = useState(0);
+  const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
 
-  const audio = new Audio("/sniper.mp3");
+  useEffect(() => {
+    setAudio(new Audio("/sniper.mp3"));
+  }, []);
 
   const difference = useMemo(() => {
     return getWordDifference(input.trimEnd(), words[currentWord]);
@@ -41,7 +44,7 @@ export function Typing() {
 
   const playAudio = () => {
     console.log("calling playAudio");
-    audio.play();
+    audio?.play();
   };
 
   return (
