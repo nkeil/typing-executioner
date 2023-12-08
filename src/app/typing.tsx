@@ -1,6 +1,12 @@
 "use client";
 
-import { ChangeEventHandler, useEffect, useMemo, useState } from "react";
+import {
+  ChangeEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { clsx } from "clsx";
 import { getWordDifference } from "@/utils/typing";
 
@@ -11,29 +17,22 @@ export function Typing() {
   const [input, setInput] = useState("");
   const [done, setDone] = useState(false);
   const [numMistakes, setNumMistakes] = useState(0);
-  const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
-
-  useEffect(() => {
-    setAudio(new Audio("/sniper.mp3"));
-  }, []);
 
   const difference = useMemo(() => {
     return getWordDifference(input.trimEnd(), words[currentWord]);
   }, [input, currentWord]);
 
-  useEffect(() => {
-    if (input.includes(" ")) {
-      setNumMistakes((m) => m + difference.result);
-      if (currentWord + 1 < words.length) setCurrentWord((value) => value + 1);
-      else setDone(true);
-      setInput("");
-    }
-  }, [input, currentWord, difference]);
-
   const onInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setInput(e.target.value);
     if (e.target.value.length > input.length) playAudio();
   };
+
+  const finishWord = useCallback(() => {
+    setNumMistakes((m) => m + difference.result);
+    if (currentWord + 1 < words.length) setCurrentWord((value) => value + 1);
+    else setDone(true);
+    setInput("");
+  }, [currentWord, difference.result]);
 
   const restart = () => {
     setCurrentWord(0);
@@ -43,9 +42,12 @@ export function Typing() {
   };
 
   const playAudio = () => {
-    console.log("calling playAudio");
-    audio?.play();
+    new Audio("/sniper.mp3")?.play();
   };
+
+  useEffect(() => {
+    if (input.includes(" ")) finishWord();
+  }, [finishWord, input]);
 
   return (
     <div>
