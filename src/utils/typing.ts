@@ -30,20 +30,20 @@ export function getWordDifference(word1: string, word2: string) {
       const add1 = helper(i1, i2 + 1);
       const sub1 = helper(i1 + 1, i2);
       const replace = helper(i1 + 1, i2 + 1);
-      if (add1.result < sub1.result && add1.result < replace.result) {
+      if (add1.result <= sub1.result && add1.result <= replace.result) {
         ret = {
           diff: { type: "MISSING", value: word2[i2] },
-          result: add1.result,
+          result: 1 + add1.result,
         };
-      } else if (sub1.result < add1.result && sub1.result < replace.result) {
+      } else if (sub1.result <= add1.result && sub1.result <= replace.result) {
         ret = {
           diff: { type: "EXTRA", value: word1[i1] },
-          result: sub1.result,
+          result: 1 + sub1.result,
         };
       } else {
         ret = {
           diff: { type: "WRONG", value: word2[i2] },
-          result: replace.result,
+          result: 1 + replace.result,
         };
       }
     }
@@ -72,5 +72,6 @@ export function getWordDifference(word1: string, word2: string) {
       i2++;
     }
   }
+  console.log(memo);
   return { result, diff: fullDiff };
 }
