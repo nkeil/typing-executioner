@@ -50,7 +50,7 @@ export function Typing() {
   }, [finishWord, input]);
 
   return (
-    <div>
+    <div className="p-5 bg-red-500 border-black border-4">
       {done ? (
         <div className="flex flex-col gap-5 items-center">
           <div>Done! You made {numMistakes} mistakes.</div>
@@ -62,15 +62,7 @@ export function Typing() {
           </button>
         </div>
       ) : (
-        <div
-          className={clsx([
-            "w-full flex flex-col gap-5 items-center",
-            {
-              "bg-green-500": difference.result === 0,
-              "bg-red-500": difference.result > 0,
-            },
-          ])}
-        >
+        <div className={"w-full flex flex-col gap-5 items-center"}>
           <div className="text-center">
             <span>{words.slice(0, currentWord).join(" ")}</span>
             <span>{currentWord > 0 ? " " : ""}</span>
@@ -97,8 +89,8 @@ export function Typing() {
           <div className="mx-auto">
             <input onChange={onInputChange} value={input} />
           </div>
-          <div>Difference: {difference.result}</div>
-          <div>Number of mistakes: {numMistakes}</div>
+          <div>Current word difference: {difference.result}</div>
+          <div>Total number of mistakes: {numMistakes}</div>
         </div>
       )}
     </div>
