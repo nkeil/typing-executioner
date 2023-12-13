@@ -72,6 +72,5 @@ export function getWordDifference(word1: string, word2: string) {
       i2++;
     }
   }
-  console.log(memo);
   return { result, diff: fullDiff };
 }

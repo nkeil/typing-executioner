@@ -50,19 +50,19 @@ export function Typing() {
   }, [finishWord, input]);
 
   return (
-    <div className="p-5 bg-red-500 border-black border-4">
+    <div className="p-10 bg-transparent text-blood-red">
       {done ? (
         <div className="flex flex-col gap-5 items-center">
-          <div>Done! You made {numMistakes} mistakes.</div>
-          <button
-            className="bg-black text-white rounded-md px-5 py-2"
-            onClick={restart}
-          >
+          <div>
+            Done. You made{" "}
+            {numMistakes === 1 ? "1 mistake" : `${numMistakes} mistakes`}.
+          </div>
+          <button className="px-5 py-2" onClick={restart}>
             Restart?
           </button>
         </div>
       ) : (
-        <div className={"w-full flex flex-col gap-5 items-center"}>
+        <div className={"w-full flex flex-col gap-5 items-center text-white"}>
           <div className="text-center">
             <span>{words.slice(0, currentWord).join(" ")}</span>
             <span>{currentWord > 0 ? " " : ""}</span>
@@ -71,9 +71,9 @@ export function Typing() {
                 <span
                   key={i}
                   className={clsx({
-                    "bg-green-300": char.type === "CORRECT",
-                    "bg-gray-300": char.type === "FUTURE",
-                    "bg-red-800":
+                    "bg-yellow-900": char.type === "CORRECT",
+                    "bg-gray-800": char.type === "FUTURE",
+                    "bg-[#8A0707]":
                       char.type === "MISSING" ||
                       char.type === "WRONG" ||
                       char.type === "EXTRA",
@@ -86,8 +86,12 @@ export function Typing() {
             <span>{currentWord < words.length - 1 ? " " : ""}</span>
             <span>{words.slice(currentWord + 1).join(" ")}</span>
           </div>
-          <div className="mx-auto">
-            <input onChange={onInputChange} value={input} />
+          <div className="mx-auto text-white border border-red-500">
+            <input
+              className="bg-black"
+              onChange={onInputChange}
+              value={input}
+            />
           </div>
           <div>Current word difference: {difference.result}</div>
           <div>Total number of mistakes: {numMistakes}</div>
